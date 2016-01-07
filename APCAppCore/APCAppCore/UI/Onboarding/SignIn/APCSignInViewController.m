@@ -188,25 +188,32 @@ static NSString * const kServerInvalidEmailErrorString = @"Invalid username or p
                 }];
                 
             } else {
-                [user retrieveConsentOnCompletion:^(NSError *error) {
-                    [spinnerController dismissViewControllerAnimated:YES completion:^{
-                        if (error) {
-                            APCLogError2 (error);
-                            
-                            if (error.code == SBBErrorCodeServerPreconditionNotMet) {
-                                [self showConsent];
-                            } else {
-                                UIAlertController *alert = [UIAlertController simpleAlertWithTitle:NSLocalizedStringWithDefaultValue(@"Sign In", @"APCAppCore", APCBundle(), @"Sign In", @"") message:error.message];
-                                [self presentViewController:alert animated:YES completion:nil];
-                            }
-                            
-                        } else {
-                            user.consented = YES;
-                            user.userConsented = YES;
-                            [self signInSuccess];
-                        }
-                    }];
+                // TODO: Remove this temp code
+                [spinnerController dismissViewControllerAnimated:YES completion:^{
+                    user.consented = YES; // we don't know this without call
+                    user.userConsented = YES;
+                    [self signInSuccess];
                 }];
+                // TODO: add back in comment out code below
+//                [user retrieveConsentOnCompletion:^(NSError *error) {
+//                    [spinnerController dismissViewControllerAnimated:YES completion:^{
+//                        if (error) {
+//                            APCLogError2 (error);
+//                            
+//                            if (error.code == SBBErrorCodeServerPreconditionNotMet) {
+//                                [self showConsent];
+//                            } else {
+//                                UIAlertController *alert = [UIAlertController simpleAlertWithTitle:NSLocalizedStringWithDefaultValue(@"Sign In", @"APCAppCore", APCBundle(), @"Sign In", @"") message:error.message];
+//                                [self presentViewController:alert animated:YES completion:nil];
+//                            }
+//                            
+//                        } else {
+//                            user.consented = YES;
+//                            user.userConsented = YES;
+//                            [self signInSuccess];
+//                        }
+//                    }];
+//                }];
             }
         }];
     } else {
