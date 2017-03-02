@@ -79,6 +79,12 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(makePasscodeViewBecomeFirstResponder) name:UIApplicationWillEnterForegroundNotification object:nil];
     
     [self setupAppearance];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    APCLogViewControllerAppeared();
     
     if ([self.touchContext canEvaluatePolicy:LAPolicyDeviceOwnerAuthenticationWithBiometrics error:nil]) {
         self.passcodeView.alpha = 0;
@@ -89,12 +95,6 @@
         self.touchIdButton.hidden = YES;
         self.titleLabel.text = NSLocalizedStringWithDefaultValue(@"Enter Passcode", @"APCAppCore", APCBundle(), @"Enter Passcode", nil);
     }
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    APCLogViewControllerAppeared();
 }
 
 - (void)viewDidAppear:(BOOL)animated
